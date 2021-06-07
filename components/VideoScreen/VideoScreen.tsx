@@ -1,13 +1,21 @@
-import React from 'react';
-import { View, Text, Image, SafeAreaView, ScrollView, FlatList } from 'react-native';
+import React, { useRef } from 'react';
+import { View, Text, Image, SafeAreaView, ScrollView, FlatList, Pressable } from 'react-native';
 import video from '../../assets/data/video.json'
 import styles from './styles';
-import { AntDesign, FontAwesome, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
+import { AntDesign, Entypo } from '@expo/vector-icons';
+import { BottomSheetModalProvider, BottomSheetModal } from '@gorhom/bottom-sheet';
 import videos from '../../assets/data/videos.json'
 import VideoListItem from '../../components/VideoListItem/VideoListItem';
 import VideoPlayer from '../../components/VideoPlayer/index';
+import VideoComments from '../../components/VideoComments/index';
+import VideoComment from '../../components/VideoComment/index';
+import comments from '../../assets/data/comments.json';
 
 const VideoScreen = () => {
+    const commentsSheetRef = useRef<BottomSheetModal>(null);
+
+
+
     let viewsString = video.views.toString();
     if (video.views > 1000000) {
         viewsString = (video.views / 1000000).toFixed(1) + 'm'
@@ -16,7 +24,18 @@ const VideoScreen = () => {
     }
 
 
+    const openComments = () => {
+        commentsSheetRef.current?.present()
 
+    }
+
+    // const bottomSheetRef = useRef<BottomSheet>(null);
+    // const snapPoints = useMemo(() => ['10%','25%', '50%','100%'], []);
+
+    // // callbacks
+    // const handleSheetChanges = useCallback((index: number) => {
+    //     console.log('handleSheetChanges', index);
+    // }, []);
 
     return (
         <View style={styles.videoContainer}>
@@ -49,7 +68,7 @@ const VideoScreen = () => {
                         </View>
                         <View style={styles.actionListItem}>
                             <AntDesign name="dislike2" size={30} color="lightgrey" />
-                            <Text style={styles.actionListText}>{video.likes}</Text>
+                            <Text style={styles.actionListText}>{video.dislikes}</Text>
                         </View>
                         <View style={styles.actionListItem}>
                             <Entypo name="chat" size={30} color="lightgrey" />
@@ -82,46 +101,52 @@ const VideoScreen = () => {
                     <Text style={styles.subscriber}>Subscriber</Text>
                 </View>
                 {/* comments */}
-                <View style={{ padding: 10 }}>
+                <Pressable onPress={openComments} style={{ padding: 10 }}>
+
                     <Text style={{ color: "white", marginVertical: 8 }}>Comments 300</Text>
-
-                    <View style={styles.userInfoStyle2}>
-                        <Image
-                            style={{ width: 35, height: 35, borderRadius: 20 }}
-                            source={{ uri: video.user.image }}
-                        />
-                        <Text style={styles.title2}>Create native apps for Android and iOS using React</Text>
-                    </View>
-
-                </View>
-                {/* recommended video */}
-
-                {/* <FlatList
-                    data={videos}
-                    renderItem={({ item }) => <VideoListItem video={item} />}
-                /> */}
-
-
-
-
+                    <VideoComment comment={comments[0]} />
+                </Pressable>
+                {/* all comments */}
+                <BottomSheetModal
+                    ref={commentsSheetRef}
+                    snapPoints={['25%','50%','70%']}
+                    index={0}
+                    dismissOnPanDown={true}
+                     backgroundComponent={({ style }) => <View style={[style, { backgroundColor: '#4d4d4d' }]} />}
+                >
+                    <VideoComments />
+                </BottomSheetModal>
             </View>
         </View>
+
+
 
 
     )
 
 }
 
+// ref = { bottomSheetRef }
+// index = { 1}
+// snapPoints = { snapPoints }
+// onChange = { handleSheetChanges }
+
 
 const VideoScreenWithRecommendation = () => {
     return (
-        <FlatList
-            data={videos}
-            renderItem={({ item }) => <VideoListItem video={item} />}
-            ListHeaderComponent={VideoScreen}
-        />
+        <View>
+            <BottomSheetModalProvider>
+                <FlatList
+                    data={videos}
+                    renderItem={({ item }) => <VideoListItem video={item} />}
+                    ListHeaderComponent={VideoScreen}
+                />
 
 
+            </BottomSheetModalProvider>
+
+
+        </View>
 
     )
 

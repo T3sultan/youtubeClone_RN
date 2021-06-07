@@ -3,8 +3,7 @@ import { Text, View, StyleSheet, Image } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import styles from './styles'
 
-
-type VideoListItemProps={
+interface VideoListItemProps{
     video: {
         id: string;
         createdAt: string;
