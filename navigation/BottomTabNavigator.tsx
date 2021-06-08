@@ -16,6 +16,7 @@ import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import HomeStackComponent from './HomeStack';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -32,7 +33,7 @@ export default function BottomTabNavigator() {
          }}>
       <BottomTab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeStackComponent}
         options={{
           tabBarIcon: ({ color }) => <Foundation name="home" size={24} color={color} />,
         }}
