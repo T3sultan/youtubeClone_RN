@@ -7,12 +7,12 @@ const HomeScreen = () => {
 
     return (
 
-        <View>
+        
             <FlatList
               data={videos}
               renderItem={({item})=> <VideoListItem video={item}/>}
             />
-        </View>
+       
 
     )
 

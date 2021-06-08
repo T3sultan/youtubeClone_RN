@@ -109,7 +109,7 @@ const VideoScreen = () => {
                 {/* all comments */}
                 <BottomSheetModal
                     ref={commentsSheetRef}
-                    snapPoints={['25%','50%','70%']}
+                    snapPoints={['25%','50%','69%']}
                     index={0}
                     dismissOnPanDown={true}
                      backgroundComponent={({ style }) => <View style={[style, { backgroundColor: '#4d4d4d' }]} />}
